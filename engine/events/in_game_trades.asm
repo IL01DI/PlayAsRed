@@ -109,11 +109,14 @@ InGameTrade_DoTrade:
 	call AddNTimes
 	ld a, [hl]
 	ld [wCurEnemyLVL], a
+	ld a, [wInGameTradeGiveMonSpecies]
+	jr z, .skip_flag_set
 	ld hl, wCompletedInGameTradeFlags
 	ld a, [wWhichTrade]
 	ld c, a
 	ld b, FLAG_SET
 	predef FlagActionPredef
+.skip_flag_set
 	ld hl, ConnectCableText
 	call PrintText
 	ld a, [wWhichPokemon]
