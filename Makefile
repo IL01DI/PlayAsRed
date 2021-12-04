@@ -1,4 +1,4 @@
-roms := pokered.gbc pokeblue.gbc pokeblue_debug.gbc
+roms := pokered.gb
 
 rom_obj := \
 audio.o \
@@ -12,8 +12,6 @@ gfx/sprites.o \
 gfx/tilesets.o
 
 pokered_obj        := $(rom_obj:.o=_red.o)
-pokeblue_obj       := $(rom_obj:.o=_blue.o)
-pokeblue_debug_obj := $(rom_obj:.o=_blue_debug.o)
 
 
 ### Build tools
@@ -40,15 +38,14 @@ RGBLINK ?= $(RGBDS)rgblink
 .PHONY: all red blue blue_debug clean tidy compare tools
 
 all: $(roms)
-red:        pokered.gbc
-blue:       pokeblue.gbc
-blue_debug: pokeblue_debug.gbc
+red:        pokered.gb
+
 
 clean: tidy
 	find gfx \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' \) -delete
 
 tidy:
-	rm -f $(roms) $(pokered_obj) $(pokeblue_obj) $(pokeblue_debug_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym) rgbdscheck.o
+	rm -f $(roms) $(pokered_obj) ) $(roms:.gb=.map) $(roms:.gb=.sym) rgbdscheck.o
 	$(MAKE) clean -C tools/
 
 compare: $(roms)
@@ -65,8 +62,6 @@ RGBASMFLAGS += -E
 endif
 
 $(pokered_obj):        RGBASMFLAGS += -D _RED
-$(pokeblue_obj):       RGBASMFLAGS += -D _BLUE
-$(pokeblue_debug_obj): RGBASMFLAGS += -D _BLUE -D _DEBUG
 
 rgbdscheck.o: rgbdscheck.asm
 	$(RGBASM) -o $@ $<
@@ -87,8 +82,6 @@ $(info $(shell $(MAKE) -C tools))
 
 # Dependencies for objects (drop _red and _blue from asm file basenames)
 $(foreach obj, $(pokered_obj), $(eval $(call DEP,$(obj),$(obj:_red.o=.asm))))
-$(foreach obj, $(pokeblue_obj), $(eval $(call DEP,$(obj),$(obj:_blue.o=.asm))))
-$(foreach obj, $(pokeblue_debug_obj), $(eval $(call DEP,$(obj),$(obj:_blue_debug.o=.asm))))
 
 endif
 
@@ -97,14 +90,10 @@ endif
 
 
 pokered_pad        = 0x00
-pokeblue_pad       = 0x00
-pokeblue_debug_pad = 0xff
 
 pokered_opt        = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON RED"
-pokeblue_opt       = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
-pokeblue_debug_opt = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
 
-%.gbc: $$(%_obj) layout.link
+%.gb: $$(%_obj) layout.link
 	$(RGBLINK) -p $($*_pad) -d -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)
 	$(RGBFIX) -p $($*_pad) $($*_opt) $@
 
