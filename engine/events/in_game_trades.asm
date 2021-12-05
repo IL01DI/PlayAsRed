@@ -108,7 +108,7 @@ InGameTrade_DoTrade:
 	cp b
 	ld a, $2
 	jp nz, .tradeFailed ; jump if the selected mon's species is not the required one
-+.skip_mon_check
+.skip_mon_check
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMon1Level
 	ld bc, wPartyMon2 - wPartyMon1
@@ -296,12 +296,12 @@ TradeTextPointers3:
 	dw Thanks3Text
 	dw AfterTrade3Text
 
-TradeTextPointers3:
-	dw WannaTrade3Text
-	dw NoTrade3Text
-	dw WrongMon3Text
-	dw Thanks3Text
-	dw AfterTrade3Text
+TradeTextPointers4:
+	dw WannaTrade4Text
+	dw NoTrade4Text
+	dw WrongMon1Text
+	dw Thanks4Text
+	dw AfterTrade1Text
 
 
 ConnectCableText:
