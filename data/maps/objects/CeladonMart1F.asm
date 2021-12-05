@@ -15,5 +15,6 @@ CeladonMart1F_Object:
 
 	def_object_events
 	object_event  8,  3, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, 1 ; person
+	object SPRITE_COOLTRAINER_M,  3,  2, STAY, DOWN, 4 ; person
 
 	def_warps_to CELADON_MART_1F

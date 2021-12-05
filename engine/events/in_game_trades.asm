@@ -57,6 +57,9 @@ DoInGameTradeDialogue:
 	jr nz, .printText
 	call InGameTrade_DoTrade
 	jr c, .printText
+	ld a, [wInGameTradeGiveMonSpecies]
+	cp NO_MON
+	jr z, .printText
 	ld hl, TradedForText
 	call PrintText
 .printText
@@ -98,11 +101,14 @@ InGameTrade_DoTrade:
 	ld a, $1
 	jp c, .tradeFailed ; jump if the player didn't select a pokemon
 	ld a, [wInGameTradeGiveMonSpecies]
+	cp NO_MON
+	jr z, .skip_mon_check
 	ld b, a
 	ld a, [wcf91]
 	cp b
 	ld a, $2
-	jr nz, .tradeFailed ; jump if the selected mon's species is not the required one
+	jp nz, .tradeFailed ; jump if the selected mon's species is not the required one
++.skip_mon_check
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMon1Level
 	ld bc, wPartyMon2 - wPartyMon1
@@ -110,6 +116,7 @@ InGameTrade_DoTrade:
 	ld a, [hl]
 	ld [wCurEnemyLVL], a
 	ld a, [wInGameTradeGiveMonSpecies]
+	cp NO_MON
 	jr z, .skip_flag_set
 	ld hl, wCompletedInGameTradeFlags
 	ld a, [wWhichTrade]
@@ -124,7 +131,14 @@ InGameTrade_DoTrade:
 	ld a, [wCurEnemyLVL]
 	push af
 	call LoadHpBarAndStatusTilePatterns
+	ld a, [wInGameTradeGiveMonSpecies]
+	cp NO_MON
+	jr nz, .normal_in_game_trade_data
+	call TradeSelf_PrepareTradeData
+	jr .self_trade_data
+.normal_in_game_trade_data
 	call InGameTrade_PrepareTradeData
+.self_trade_data
 	predef InternalClockTradeAnim
 	pop af
 	ld [wCurEnemyLVL], a
@@ -133,13 +147,21 @@ InGameTrade_DoTrade:
 	ld a, [wInGameTradeReceiveMonSpecies]
 	ld [wcf91], a
 	xor a
-	ld [wMonDataLocation], a ; not used
+    push af
+	ld a, [wInGameTradeGiveMonSpecies]
+	cp NO_MON
+	jr z, .skip_swap_mons
+	pop af
 	ld [wRemoveMonFromBox], a
 	call RemovePokemon
 	ld a, $80 ; prevent the player from naming the mon
 	ld [wMonDataLocation], a
 	call AddPartyMon
 	call InGameTrade_CopyDataToReceivedMon
+	ld a, [wPartyCount]
+	dec a
+	ld [wWhichPokemon], a
+.skip_swap_mons
 	callfar EvolveTradeMon
 	call ClearScreen
 	call InGameTrade_RestoreScreen
@@ -164,9 +186,21 @@ InGameTrade_RestoreScreen:
 	call DelayFrames
 	farjp LoadWildData
 
+TradeSelf_PrepareTradeData:
+	ld a, [wWhichPokemon]
+	ld hl, wPartySpecies
+	ld b, 0
+	ld c, a
+	add hl, bc
+	ld a, [hl]
+	ld [wTradedPlayerMonSpecies], a
+	ld [wInGameTradeReceiveMonSpecies], a
+	ld hl, wTradedPlayerMonSpecies
+	jr InGameTrade_PrepareTradeData.loaded_self_trade_instead
 InGameTrade_PrepareTradeData:
 	ld hl, wTradedPlayerMonSpecies
 	ld a, [wInGameTradeGiveMonSpecies]
+.loaded_self_trade_instead
 	ld [hli], a ; wTradedPlayerMonSpecies
 	ld a, [wInGameTradeReceiveMonSpecies]
 	ld [hl], a ; wTradedEnemyMonSpecies
@@ -262,6 +296,14 @@ TradeTextPointers3:
 	dw Thanks3Text
 	dw AfterTrade3Text
 
+TradeTextPointers3:
+	dw WannaTrade3Text
+	dw NoTrade3Text
+	dw WrongMon3Text
+	dw Thanks3Text
+	dw AfterTrade3Text
+
+
 ConnectCableText:
 	text_far _ConnectCableText
 	text_end
@@ -330,4 +372,16 @@ Thanks3Text:
 
 AfterTrade3Text:
 	text_far _AfterTrade3Text
+	text_end
+
+WannaTrade4Text:
+	text_far _WannaTrade4Text
+	text_end
+	
+NoTrade4Text:
+	text_far _NoTrade4Text
+	text_end
+	
+Thanks4Text:
+	text_far _Thanks4Text
 	text_end
