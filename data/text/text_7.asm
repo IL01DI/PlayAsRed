@@ -215,3 +215,4 @@ _Thanks4Text::
 	text "All done, I hope"
 	line "that helped."
 	done
+	
