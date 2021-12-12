@@ -76,7 +76,7 @@ Moves:
 	move PECK,         NO_ADDITIONAL_EFFECT,        35, FLYING,       100, 35
 	move DRILL_PECK,   NO_ADDITIONAL_EFFECT,        80, FLYING,       100, 20
 	move SUBMISSION,   RECOIL_EFFECT,               80, FIGHTING,      80, 20
-	move LOW_KICK,     FLINCH_SIDE_EFFECT2,         50, FIGHTING,     100, 20
+	move LOW_KICK,     NO_ADDITIONAL_EFFECT,        50, FIGHTING,     100, 20
 	move COUNTER,      SPECIAL_DAMAGE_EFFECT,        1, FIGHTING,     100, 20
 	move SEISMIC_TOSS, SPECIAL_DAMAGE_EFFECT,        1, FIGHTING,     100, 20
 	move STRENGTH,     NO_ADDITIONAL_EFFECT,        80, NORMAL,       100, 15
@@ -110,13 +110,13 @@ Moves:
 	move QUICK_ATTACK, NO_ADDITIONAL_EFFECT,        40, NORMAL,       100, 30
 	move RAGE,         RAGE_EFFECT,                 20, NORMAL,       100, 20
 	move TELEPORT,     SWITCH_AND_TELEPORT_EFFECT,   0, PSYCHIC_TYPE, 100, 20
-	move NIGHT_SHADE,  NO_ADDITIONAL_EFFECT,         0, GHOST0,       100, 15
+	move NIGHT_SHADE,  SPECIAL_DAMAGE_EFFECT,        0, GHOST0,       100, 15
 	move MIMIC,        MIMIC_EFFECT,                 0, NORMAL,       100, 10
 	move SCREECH,      DEFENSE_DOWN2_EFFECT,         0, NORMAL,        85, 40
 	move DOUBLE_TEAM,  EVASION_UP1_EFFECT,           0, NORMAL,       100, 15
 	move RECOVER,      HEAL_EFFECT,                  0, NORMAL,       100, 10
 	move HARDEN,       DEFENSE_UP1_EFFECT,           0, NORMAL,       100, 30
-	move MINIMIZE,     EVASION_UP1_EFFECT,           0, NORMAL,       100, 10
+	move MINIMIZE,     EVASION_UP2_EFFECT,           0, NORMAL,       100, 10
 	move SMOKESCREEN,  ACCURACY_DOWN1_EFFECT,        0, NORMAL,       100, 20
 	move CONFUSE_RAY,  CONFUSION_EFFECT,             0, GHOST,        100, 10
 	move WITHDRAW,     DEFENSE_UP1_EFFECT,           0, WATER,        100, 40
