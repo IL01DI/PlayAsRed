@@ -7,13 +7,17 @@ TypeNames:
 	dw .Grass
 	dw .Ground
 	dw .Rock
-	dw .Bird
 	dw .Bug
 	dw .Ghost
 	dw .Dark
 	dw .Steel
+	dw .Fire
+	dw .Water
+	dw .Electric
+	dw .Ice
+	dw .Poison
 
-REPT FIRE - STEEL - 1
+REPT FIRE - POISON0 - 1
 	dw .Normal
 ENDR
 
@@ -25,6 +29,10 @@ ENDR
 	dw .Ice
 	dw .Dragon
 	dw .Fairy
+	dw .Normal
+	dw .Grass
+	dw .Flying
+	dw .Ghost
 
 	assert_table_length NUM_TYPES
 
@@ -40,7 +48,6 @@ ENDR
 .Ice:      db "ICE@"
 .Ground:   db "GROUND@"
 .Rock:     db "ROCK@"
-.Bird:     db "BIRD@"
 .Bug:      db "BUG@"
 .Ghost:    db "GHOST@"
 .Dragon:   db "DRAGON@"
