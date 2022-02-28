@@ -15,8 +15,8 @@ PHYSICAL EQU const_value
 	const FIRE0        , $10
 	const WATER0       , $11
 	const ELECTRIC0    , $12
-    const ICE0         , $13
-    const POISON0      , $14
+        const ICE0         , $13
+        const POISON0      , $14
 
 	const_next 20
 
